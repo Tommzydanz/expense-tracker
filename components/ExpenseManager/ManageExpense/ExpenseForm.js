@@ -6,7 +6,7 @@ import { getFormattedDate } from "../../.././util/date";
 import { GlobalStyles } from "../../../constants/styles";
 
 
-function ExpenseForm({ submitButtonLabel, invalid, onCancel, onSubmit, defaultValues }) {
+function ExpenseForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
   const [inputs, setInputs] = useState({
     id: "",
     description: {
