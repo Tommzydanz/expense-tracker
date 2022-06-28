@@ -58,9 +58,9 @@ function ExpenseForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
           },
         };
       });
-      return;
+      return; // so it doesn't crash
     }
-    // so it doesn't crash
+   
     onSubmit(expenseData);
   }
 
