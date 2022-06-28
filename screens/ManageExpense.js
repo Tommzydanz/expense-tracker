@@ -22,8 +22,6 @@ function ManageExpense({ route, navigation }) {
 
   const expenseItemsId = expenseItems.find(expense => expense.id === editedExpenseId);
 
-  // const expensesCtx = useContext(ExpensesContext);
-
   useLayoutEffect(() => {
     navigation.setOptions({
       title: isEditing ? "Edit Expense" : "Add Expense",
@@ -43,6 +41,7 @@ function ManageExpense({ route, navigation }) {
   }
 
   function confirmHandler(expenseData) {
+    
     if (isEditing) {
       Object.assign(expenseData, { id: editedExpenseId});
       dispatch(
@@ -57,7 +56,6 @@ function ManageExpense({ route, navigation }) {
            expenseData
       ));
     }
-
     navigation.goBack();
   }
 
