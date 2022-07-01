@@ -8,7 +8,6 @@ import { GlobalStyles } from "../../../constants/styles";
 
 function ExpenseForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
   const [inputs, setInputs] = useState({
-    id: "",
     description: {
       value: defaultValues ? defaultValues.description : "",
       isValid: true , //initially dont show error message
@@ -35,7 +34,6 @@ function ExpenseForm({ submitButtonLabel, onCancel, onSubmit, defaultValues }) {
 
   function sumbitExpenseHandler() {
     const expenseData = {
-      id: inputs.id,
       description: inputs.description.value,
       amount: +inputs.amount.value, //the plus is to convert the amount to number
       date: new Date(inputs.date.value),

@@ -4,13 +4,15 @@ import { GlobalStyles } from "../constants/styles";
 import ExpenseForm from "../components/ExpenseManager/ManageExpense/ExpenseForm";
 import IconButton from "../components/UI/IconButton";
 // import { ExpensesContext } from '../store/context/expenses-context';
-
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateExpense,
   addExpense,
   deleteExpense,
 } from "../store/redux/expenses";
+import { storeExpense, updateExpenseItem, deleteExpenseItem } from "../util/http";
+
+
 
 function ManageExpense({ route, navigation }) {
   //for routing or passing parameters
@@ -30,8 +32,9 @@ function ManageExpense({ route, navigation }) {
 
   //
 
-  function deleteExpenseHandler() {
+  async function deleteExpenseHandler() {
     dispatch(deleteExpense({ id: editedExpenseId }));
+    await deleteExpenseItem(editedExpenseId);
     // expensesCtx.deleteExpense(editedExpenseId);
     navigation.goBack();
   }
@@ -40,21 +43,20 @@ function ManageExpense({ route, navigation }) {
     navigation.goBack();
   }
 
-  function confirmHandler(expenseData) {
+  async function confirmHandler(expenseData) {
     
     if (isEditing) {
-      Object.assign(expenseData, { id: editedExpenseId});
+      await updateExpenseItem(editedExpenseId, expenseData);
       dispatch(
-        updateExpense( 
-        expenseData)
+        updateExpense({
+        ...expenseData, id: editedExpenseId})
       );
+      
     } else {
-      const id = new Date().toString() + Math.random().toString();
-      Object.assign(expenseData, { id: id });
+      const id = await storeExpense(expenseData);
       dispatch(
         addExpense(
-           expenseData
-      ));
+           {...expenseData, id: id}));
     }
     navigation.goBack();
   }

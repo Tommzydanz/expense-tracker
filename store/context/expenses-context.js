@@ -1,62 +1,14 @@
 import { createContext, useReducer } from "react";
 
 
-const DUMMY_EXPENSES = [
-    {
-        id: 'e1',
-        description: 'A pair of shoes',
-        amount: 59.99,
-        date: new Date('2022-05-29')
-    },
-    {
-        id: 'e2',
-        description: 'A power bank',
-        amount: 69.79,
-        date: new Date('2022-06-11')
-    },
-    {
-        id: 'e3',
-        description: 'A pair of slides',
-        amount: 8.59,
-        date: new Date('2022-06-15')
-    },
-    {
-        id: 'e4',
-        description: 'A game console',
-        amount: 40.99,
-        date: new Date('2022-06-18')
-    },
-    {
-        id: 'e5',
-        description: 'A pair of shoes',
-        amount: 59.99,
-        date: new Date('2022-06-16')
-    },
-    {
-        id: 'e6',
-        description: 'A power bank',
-        amount: 69.79,
-        date: new Date('2022-06-16')
-    },
-    {
-        id: 'e7',
-        description: 'A pair of slides',
-        amount: 8.59,
-        date: new Date('2022-06-19')
-    },
-    {
-        id: 'e8',
-        description: 'A game port',
-        amount: 40.99,
-        date: new Date('2022-06-21')
-    },
-]
+
 
 
 export const ExpensesContext = createContext({  
      expenses: [],
      addExpense: ({ description, amount, date }) => {
      },
+     setExpenses: (expenses) => {},
      deleteExpense: (id) => {},
      updateExpense: (id, {description, amount, date}) => {},
 });
@@ -69,7 +21,9 @@ function expensesReducer(state, action){
          //expense typeof    action.amount ===   'number'
         case 'ADD':
             const id = new Date().toString + Math.random().toString();
-            return [{...action.payload, id: id}, ...state, ]; 
+            return [{...action.payload, id: id}, ...state, ];
+        case "SET":
+            return action.payload;
         case 'UPDATE':
             const updatableExpenseIndex = state.findIndex((expense) => expense.id === action.payload.id);
             const updatableExpense = state[updatableExpenseIndex]
@@ -93,6 +47,10 @@ function ExpenseContextProvider({ children}){
     dispatch({ type: 'ADD', payload: expenseData});
     }
 
+    function setExpenses(expenses){
+        dispatch({ type: 'SET', payload: expenses});
+    }
+
     function deleteExpense(id){
         dispatch({ type: 'DELETE', payload: id });
     }
@@ -105,6 +63,7 @@ function ExpenseContextProvider({ children}){
     const value = {
         expenses: expensesState,
         addExpense: addExpense,
+        setExpenses: setExpenses,
         deleteExpense: deleteExpense,
         updateExpense: updateExpense,
     };
